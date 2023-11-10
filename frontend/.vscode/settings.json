@@ -1,0 +1,7 @@
+{
+    "AllAutocomplete.showCurrentDocument": true,
+    "emmet.syntaxProfiles": {
+  "javascript": "jsx"
+   }
+
+}
