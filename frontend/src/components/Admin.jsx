@@ -37,8 +37,6 @@ const Admin = () => {
   //Recibiendo las respuestas de los usuarios
   useEffect(()=>{
     socket.on("answer", async (data) => {
-
-
       //Anexando la ultima respuesta que llego. 
       let answerInfo = JSON.parse(data);
 
@@ -49,6 +47,8 @@ const Admin = () => {
       let element =  document.createElement("div")
       element.innerHTML = answerData
       reference.current.appendChild(element)
+
+      console.log(data.answer)
 
       //Obteniendo las respuestas de la db ordendas por fecha reciente a mas antigua
       //El desarrollador frontend puede usar la informacion como guste para mostrar la informacion

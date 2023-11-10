@@ -7,17 +7,20 @@ import "./styles/home.css";
 
 //Enviando la respectiva respuesta al administrador
 const emitAnswer = (answer, user, question) => {
-  const data = JSON.stringify({answer:answer, user:user, question:question})
+  const data = JSON.stringify({
+    answer: answer,
+    user: user,
+    question: question,
+  });
   socket.emit("answer", data);
 };
-
 
 const Home = () => {
   const dataUser = useUser();
   const [question, setQuestion] = useState("Primera pregunta");
   const [answerInfo, setAnswerInfo] = useState();
 
-  //Recibiendo la informacion de la pregunta 
+  //Recibiendo la informacion de la pregunta
   useEffect(() => {
     socket.on("question", (data) => {
       let questionInfo = JSON.parse(data);
@@ -27,46 +30,56 @@ const Home = () => {
         setQuestion(questionInfo.question);
       }
     });
-  }, [question,answerInfo]);
+  }, [question, answerInfo]);
 
-  const generateAnswer = async (answer, user, question) =>{
-  
+  const generateAnswer = async (answer, user, question) => {
     //Limpiando el campo de respuesta
-    setAnswerInfo("")
+    setAnswerInfo("");
 
     const fetch = new FetchData(`${getBACKENDurl}/answers`);
 
-    try{
-
+    try {
       //Guardando la respuesta en la db
-      const dataUser = await fetch.FetchDataApi({
-        answer:answer,
-        user:user,
-        question:question
+      const dataUser = await fetch.FetchDataApi(
+        {
+          answer: answer,
+          user: user,
+          question: question,
         },
-        "POST",
-      
+        "POST"
       );
-  
-      console.log(dataUser)
-  
+
+      console.log(dataUser);
+
       //Enviando la informacion de la respuesta al administrador
-      emitAnswer(answer, user, question)
+      emitAnswer(answer, user, question);
     } catch {
-      alert("Ha ocurrido un error")
+      alert("Ha ocurrido un error");
     }
-    
-  } 
+  };
 
   return (
     <>
       <p>.</p>
       <div className="container-home">
         <p>Hola, {dataUser.user} si sale tu nombre, estas logeado</p>
-
-        <h1>{question}</h1>
-        <input type="text" value={answerInfo} onChange={(e) => setAnswerInfo(e.target.value)} />
-        <button onClick={(e) => generateAnswer(answerInfo, dataUser.user, question)}>Enviar respuesta</button>
+        {dataUser.login === "true" && (
+          <>
+            <h1>{question}</h1>
+            <input
+              type="text"
+              value={answerInfo}
+              onChange={(e) => setAnswerInfo(e.target.value)}
+            />
+            <button
+              onClick={(e) =>
+                generateAnswer(answerInfo, dataUser.user, question)
+              }
+            >
+              Enviar respuesta
+            </button>
+          </>
+        )}
       </div>
     </>
   );
