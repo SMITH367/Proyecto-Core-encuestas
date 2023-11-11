@@ -61,8 +61,8 @@ const Admin = () => {
         alert("Ha ocurrido un error")
       }
 
-    },[answer]);
-  })
+    });
+  },[])
   
 //Mostrando la informacion de usuarios logeados y de sus respectivas respuestas
 //NOTA: Las respuestas pueden ser mostradas como estan (es decir se recibe y se muestra) o se pueden mostrar las que se solicitan al back 
@@ -74,7 +74,7 @@ const Admin = () => {
         <section className="main-admin-panel">
           <article className="main-admin-panel-element">
             <h1 className="center">Usuarios activos</h1>
-            {loggedUsers.length > 0 && (
+        
               <article className="element-container-users center">
                 {loggedUsers.map((el, id) => (
                   <div key={id} className="element">
@@ -91,7 +91,7 @@ const Admin = () => {
                   </div>
                 ))}
               </article>
-            )}
+          
           </article>
           <article  >
             <h1>Respuestas a las preguntas</h1>

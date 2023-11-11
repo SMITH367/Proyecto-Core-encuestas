@@ -12,6 +12,7 @@ const emitAnswer = (answer, user, question) => {
     user: user,
     question: question,
   });
+  console.log("sending")
   socket.emit("answer", data);
 };
 
@@ -30,7 +31,7 @@ const Home = () => {
         setQuestion(questionInfo.question);
       }
     });
-  }, [question, answerInfo]);
+  }, [question, answerInfo, dataUser.user]);
 
   const generateAnswer = async (answer, user, question) => {
     //Limpiando el campo de respuesta
@@ -38,9 +39,10 @@ const Home = () => {
 
     const fetch = new FetchData(`${getBACKENDurl}/answers`);
 
+
     try {
       //Guardando la respuesta en la db
-      const dataUser = await fetch.FetchDataApi(
+      const dataAnswers = await fetch.FetchDataApi(
         {
           answer: answer,
           user: user,
@@ -48,8 +50,6 @@ const Home = () => {
         },
         "POST"
       );
-
-      console.log(dataUser);
 
       //Enviando la informacion de la respuesta al administrador
       emitAnswer(answer, user, question);
