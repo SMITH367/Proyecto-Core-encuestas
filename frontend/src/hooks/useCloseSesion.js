@@ -6,7 +6,7 @@ const useCloseSesion = (setUserDataStatus) => {
     });
     localStorage.removeItem("login");
 
-    localStorage.removeItem("name");
+    localStorage.removeItem("user");
 
     localStorage.removeItem("email");
 };
