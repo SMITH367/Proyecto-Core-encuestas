@@ -7,7 +7,7 @@ import icon from "./sources/icon.png";
 
 const Header = ({ setUserDataStatus }) => {
   const toogle = useRef();
-  const { login } = useUser();
+  const { login, user } = useUser();
   const closeSesion = useCloseSesion;
 
   const toogleHeader = () =>
@@ -44,7 +44,7 @@ const Header = ({ setUserDataStatus }) => {
             <li className="nav-menu-item">
               <button
                 className="btn-sesion red"
-                onClick={(e) => closeSesion(setUserDataStatus)}
+                onClick={(e) => closeSesion(setUserDataStatus, user)}
               >
                 Cerrar sesion
               </button>

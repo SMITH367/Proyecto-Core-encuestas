@@ -73,10 +73,12 @@ router.post('/login/:id', (req, res) => {
     let id = req.params.id
     conexionMysql.query(query.selectByid, [id], (err,rows,fields) => {
         if (!err) {
-            
             // Si el user existe continua
             if(rows.length > 0) {
                 if(rows[0].password === req.body.password){
+                    conexionMysql.query(query.setLogin, [1,id], (err, rows, fields) => {
+                        if (err) console.log(err)
+                    })
                 res.send({user:rows[0].user})
                 } else {
                     res.send(403)
@@ -89,6 +91,7 @@ router.post('/login/:id', (req, res) => {
             res.sendStatus(500)
         }
     })
+    
 }) 
 
 
@@ -119,5 +122,15 @@ router.get('/answers', (req, res) => {
         }
     })
 })
+
+router.post('/logout/:id', (req, res) => {
+    conexionMysql.query(query.setLogin, [0,req.params.id], (err, rows, fields) => {
+        if (err) console.log(err)
+        else {
+         res.json("logged out")    
+        }
+    })
+})
+
 
 module.exports = router 

@@ -1,28 +1,17 @@
-.main-admin-panel{
+.element-cont{
     width: 100%;
     display: flex;
-    border:solid;
-}
-
-.main-admin-panel-element{
-    min-width: 50%;
-    max-width: 50%;
-    word-wrap: break-word;
-}
-
-.element-container{
-    width: 90%;
-    margin: auto;
-    
 }
 
 .element-container div{
     padding: 1em 0 1em 0;
 }
 
-.element {
+.el {
+    width: 40%;
+    margin:auto;
     margin-top:10px;
-    height: 120px;
+    min-height: 120px;
     border:solid red;
 }
 

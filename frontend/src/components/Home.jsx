@@ -18,8 +18,8 @@ const emitAnswer = (answer, user, question) => {
 
 const Home = () => {
   const dataUser = useUser();
-  const [question, setQuestion] = useState("Primera pregunta");
-  const [answerInfo, setAnswerInfo] = useState();
+  const [question, setQuestion] = useState("Pregunta 1");
+  const [answerInfo, setAnswerInfo] = useState("");
 
   //Recibiendo la informacion de la pregunta
   useEffect(() => {
