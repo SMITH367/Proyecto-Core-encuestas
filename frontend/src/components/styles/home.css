@@ -8,18 +8,33 @@
 }
 
 .el {
-    width: 40%;
+    width: 45%;
     margin:auto;
     margin-top:10px;
     min-height: 120px;
     border:solid red;
 }
-
-.reverse {
+.answers-cont{
     display: flex;
-    flex-flow: row wrap-reverse
+    justify-items: center;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+}
+
+.answer{
+padding:1em;
+overflow-wrap: break-word;
+
 }
 
 .container-home {
     margin-top: 50px;
+}
+
+@media (max-width:576px) {
+
+ .answers-cont{
+    flex-wrap: wrap;
+ }
 }

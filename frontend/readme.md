@@ -13,3 +13,8 @@ y
 npm start
 
 Al iniciar dara un mensaje por default de React JS de montaje del servidor exitoso
+
+para crear version de produccion con archivos estaticos 
+ejecutar el comando
+ 
+npm run build

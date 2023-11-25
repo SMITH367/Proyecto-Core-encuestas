@@ -5,6 +5,7 @@ const selectAnswers = "SELECT RespuestasConNumeros.*, usuarios.user AS usuario F
 const selectByid = "SELECT * FROM usuarios WHERE user = ?";
 const save = "INSERT INTO usuarios SET ?";
 const saveAnswer = "INSERT INTO respuestas SET ?";
+const updateAnswer = "UPDATE respuestas SET answer = ?, date = CURRENT_TIMESTAMP WHERE user = ? AND question = ?"
 const update = "UPDATE usuarios SET ? WHERE user = ? ";
 const setLogin = "UPDATE usuarios SET login=? WHERE user = ? ";
 const clear = "DELETE FROM usuarios WHERE user = ?";
@@ -15,6 +16,7 @@ module.exports = {
     selectByid,
     save,
     saveAnswer,
+    updateAnswer,
     update,
     clear,
     setLogin

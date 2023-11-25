@@ -6,5 +6,5 @@ mostradas al administrador.
 
 # Recomendaciones
 
-Se debe ejecutar primero el backend y despues el frontend, pues REACT usa como puerto por defecto el 3000 y el backend 
-usara el 3000, entonces para evitar conflictos en la ejecucion, correr primero el backend. 
+Se debe ejecutar primero el backend y despues el frontend, los puertos estan estructurados
+ 

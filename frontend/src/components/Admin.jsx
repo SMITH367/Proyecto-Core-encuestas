@@ -24,52 +24,25 @@ const Admin = () => {
           const data = await fetch.FetchDataApiGet();
           const users = data.map((el) => el.user);
           let usersCleaned = Array.from(new Set(users));
-    
-          console.log(usersCleaned);
           setusersLoggedIn(usersCleaned);
           setAnswers(data);
         } catch {
           alert("Ha ocurrido un error");
         }
-    
       }
       getLogedUsers()
     });
-
-   
       }, [usersLoggedIn]);
-
-  useEffect( () => {
-    const loadMessages = async () => {
-      try {
-        const fetch = new FetchData(`${getBACKENDurl}/answers`);
-        const data = await fetch.FetchDataApiGet();
-        const users = data.map((el) => el.user);
-        let usersCleaned = Array.from(new Set(users));
-  
-        console.log(usersCleaned);
-        setusersLoggedIn(usersCleaned);
-        setAnswers(data)
-      
-      } catch {
-        alert("Ha ocurrido un error");
-      }
-    }
-    loadMessages()
-  }, []);
 
   //Recibiendo las respuestas de los usuarios
   useEffect(() => {
     socket.on("answer", async (data) => {
-
       //Obteniendo las respuestas de los usuarios para mostrarlas.
       try {
         const fetch = new FetchData(`${getBACKENDurl}/answers`);
         const data = await fetch.FetchDataApiGet();
         const users = data.map((el) => el.user);
         let usersCleaned = Array.from(new Set(users));
-
-        console.log(usersCleaned);
         setusersLoggedIn(usersCleaned);
         setAnswers(data);
       } catch {
@@ -93,6 +66,9 @@ const Admin = () => {
                 <div key={id} className="element-cont">
                   <div className="el">
                     <p>{el}</p>
+                    <button onClick={(e) => emitQuestion("Pregunta 1", el)}>
+                      pregunta 1
+                    </button>
                     <button onClick={(e) => emitQuestion("Pregunta 2", el)}>
                       pregunta 2
                     </button>
@@ -106,25 +82,31 @@ const Admin = () => {
                   </div>
                   <div className="el">
                       <h2 className="center">Respuestas</h2>
+                      <section className="answers-cont">                    
                       {answers.map(
                         (answer) =>
-                          answer.user === el &&
-                        <div>{`${answer.question} :  ${answer.answer}`} <br /></div>                          
+                          answer.user === el && answer.question === "Pregunta 1" &&
+                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
+                      )}{answers.map(
+                        (answer) =>
+                          answer.user === el && answer.question === "Pregunta 2" &&
+                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
+                      )}{answers.map(
+                        (answer) =>
+                          answer.user === el && answer.question === "Pregunta 3" &&
+                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
+                      )}{answers.map(
+                        (answer) =>
+                          answer.user === el && answer.question === "Pregunta 4" &&
+                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
                       )}
+                      </section>
+                     
                     </div>
                 </div>
               </>
             ))}
           </article>
-
-          {/* <article  >
-            <h1>Respuestas a las preguntas</h1>
-            
-              <article ref={reference} className="element-container reverse">
-                
-              </article>
-           
-          </article> */}
         </section>
       </div>
     </>

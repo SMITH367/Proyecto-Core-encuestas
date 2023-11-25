@@ -1,7 +1,7 @@
 const express = require('express')
 
 const app = express()
-app.set('port', 3000)
+app.set('port', 3001 || process.env.PORT)
 app.set('address','localhost')
 
 //Midelwares para el manejo de recepcion de peticiones http  

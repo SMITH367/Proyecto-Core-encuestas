@@ -7,7 +7,7 @@ const query = require('./querys')
 
 //End point para obtener todos los usuarios registrados
 router.get('/users', (req, res) => {
-    conexionMysql.query(query.select, (err,rows,fields) => {
+    conexionMysql.query(query.select, (err, rows, fields) => {
         if (!err) {
             res.status(200).send(rows);
         } else {
@@ -19,7 +19,7 @@ router.get('/users', (req, res) => {
 //End point para obtener un usuario registrado
 router.get('/users/:id', (req, res) => {
     let id = req.params.id
-    conexionMysql.query(query.selectByid, [id], (err,rows,fields) => {
+    conexionMysql.query(query.selectByid, [id], (err, rows, fields) => {
         if (!err) {
             res.json(rows)
         } else {
@@ -32,8 +32,8 @@ router.get('/users/:id', (req, res) => {
 router.post('/user', (req, res) => {
 
     let data = {
-        user:req.body.user,
-        password:req.body.password
+        user: req.body.user,
+        password: req.body.password
     }
     conexionMysql.query(query.save, [data], (err, rows, fields) => {
         if (err) res.send(err)
@@ -41,7 +41,7 @@ router.post('/user', (req, res) => {
             res.json("User added");
         }
     })
-}) 
+})
 
 //Endpoint para modificar un usuario
 router.put('/users/:id', (req, res) => {
@@ -71,15 +71,17 @@ router.delete('/users/:id', (req, res) => {
 router.post('/login/:id', (req, res) => {
 
     let id = req.params.id
-    conexionMysql.query(query.selectByid, [id], (err,rows,fields) => {
+    conexionMysql.query(query.selectByid, [id], (err, rows, fields) => {
         if (!err) {
             // Si el user existe continua
-            if(rows.length > 0) {
-                if(rows[0].password === req.body.password){
-                    conexionMysql.query(query.setLogin, [1,id], (err, rows, fields) => {
+            if (rows.length > 0) {
+                if (rows[0].password === req.body.password) {
+                    conexionMysql.query(query.setLogin, [1, id], (err, rows, fields) => {
                         if (err) console.log(err)
                     })
-                res.send({user:rows[0].user})
+                    res.send({
+                        user: rows[0].user
+                    })
                 } else {
                     res.send(403)
                 }
@@ -91,8 +93,8 @@ router.post('/login/:id', (req, res) => {
             res.sendStatus(500)
         }
     })
-    
-}) 
+
+})
 
 
 //Creacion y guardado de respuestas
@@ -100,21 +102,45 @@ router.post('/answers', (req, res) => {
 
     //Se reciben los datos enviados por el front con la siguiente informacion
     let data = {
-        user:req.body.user,
-        answer:req.body.answer,
-        question:req.body.question
+        user: req.body.user,
+        answer: req.body.answer,
+        question: req.body.question
     }
-    conexionMysql.query(query.saveAnswer, [data], (err, rows, fields) => {
+    conexionMysql.query("select user, question from respuestas", [data], (err, rows, fields) => {
+
         if (err) res.send(err)
+
         else {
-            res.json("Answer added");
+            console.log(rows)
+            let existence = false
+            rows.forEach(element => {
+                if (element.user === data.user && element.question === data.question)
+                    existence = true
+            });
+
+            if (existence) {
+                conexionMysql.query(query.updateAnswer, [data.answer, data.user, data.question], (err, rows, fields) => {
+                    if (err) res.send(err)
+                    else {
+                        res.json("Answer updated");
+                    }
+                })
+            } else {
+                conexionMysql.query(query.saveAnswer, [data], (err, rows, fields) => {
+                    if (err) res.send(err)
+                    else {
+                        res.json("Answer added");
+                    }
+                })
+            }
         }
     })
-}) 
+
+})
 
 //Obtencion de todas las respuestas 
 router.get('/answers', (req, res) => {
-    conexionMysql.query(query.selectAnswers, (err,rows,fields) => {
+    conexionMysql.query(query.selectAnswers, (err, rows, fields) => {
         if (!err) {
             res.status(200).send(rows);
         } else {
@@ -124,13 +150,13 @@ router.get('/answers', (req, res) => {
 })
 
 router.post('/logout/:id', (req, res) => {
-    conexionMysql.query(query.setLogin, [0,req.params.id], (err, rows, fields) => {
+    conexionMysql.query(query.setLogin, [0, req.params.id], (err, rows, fields) => {
         if (err) console.log(err)
         else {
-         res.json("logged out")    
+            res.json("logged out")
         }
     })
 })
 
 
-module.exports = router 
+module.exports = router
