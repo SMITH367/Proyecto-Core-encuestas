@@ -5,8 +5,10 @@ import { getBACKENDurl } from "./services/getBACKENDurl";
 import "./styles/home.css";
 
 //Enviando pregunta hacia el usuario que le corresponde
-const emitQuestion = (question, user) => {
-  const data = JSON.stringify({ question: question, user: user });
+const emitQuestion = (question, user, personalized = false) => {
+  const data = JSON.stringify({ question: question, user: user, personalized:personalized });
+  
+  console.log(data)
   socket.emit("question", data);
 };
 
@@ -51,8 +53,38 @@ const Admin = () => {
     });
   }, []);
 
+  useEffect( () => {
+    const loadMessages = async () => {
+      try {
+        const fetch = new FetchData(`${getBACKENDurl}/answers`);
+        const data = await fetch.FetchDataApiGet();
+        const users = data.map((el) => el.user);
+        let usersCleaned = Array.from(new Set(users));
+  
+        console.log(usersCleaned);
+        setusersLoggedIn(usersCleaned);
+        setAnswers(data)
+      
+      } catch {
+        alert("Ha ocurrido un error");
+      }
+    }
+    loadMessages()
+  }, []);
+
+
   //Mostrando la informacion de usuarios logeados y de sus respectivas respuestas
   //NOTA: Las respuestas pueden ser mostradas como estan (es decir se recibe y se muestra) o se pueden mostrar las que se solicitan al back
+ 
+ 
+  //Pregunta personalizada
+  const personalizedQuestion = (user) => {
+    //Agregar medio personalizado para recibir las preguntas 
+    const question = prompt("Ingrese la pregunta personalizada")
+    emitQuestion(question,user, true)
+  }
+
+ 
   return (
     <>
       <p>.</p>
@@ -78,6 +110,10 @@ const Admin = () => {
                     <button onClick={(e) => emitQuestion("Pregunta 4", el)}>
                       pregunta 4
                     </button>
+
+                    <button onClick={(e) => personalizedQuestion(el)}>
+                      Pregunta personalizada
+                    </button>
                     
                   </div>
                   <div className="el">
@@ -98,6 +134,10 @@ const Admin = () => {
                       )}{answers.map(
                         (answer) =>
                           answer.user === el && answer.question === "Pregunta 4" &&
+                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
+                      )}{answers.map(
+                        (answer) =>
+                          answer.user === el && answer.question.includes("Personalizada") === true &&
                         <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
                       )}
                       </section>

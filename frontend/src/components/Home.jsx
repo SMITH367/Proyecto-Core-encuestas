@@ -20,6 +20,7 @@ const Home = () => {
   const dataUser = useUser(null);
   const [question, setQuestion] = useState("Pregunta 1");
   const [answerInfo, setAnswerInfo] = useState("");
+  const [personalized, setPersonalized] = useState(false)
   
   //referencia que se encarga de controlar el estado del boton
   const buttonAnswer = useRef();
@@ -34,6 +35,8 @@ const Home = () => {
       //Validando si la pregunta va dirigida al usuario en cuestion
       if (questionInfo.user === dataUser.user) {
         setQuestion(questionInfo.question);
+        console.log(questionInfo.personalized)
+        setPersonalized(questionInfo.personalized)
         //mostrando el boton
         if(buttonAnswer !== null)
         buttonAnswer.current.hidden = false;
@@ -41,9 +44,9 @@ const Home = () => {
         setQuestionState(true);
       }
     });
-  }, [question, answerInfo, dataUser.user]);
+  }, [question]);
 
-  const generateAnswer = async (e, answer, user, question) => {
+  const generateAnswer = async (e, answer, user, question, personalized) => {
 
     e.preventDefault()
       const fetch = new FetchData(`${getBACKENDurl}/answers`);
@@ -54,6 +57,10 @@ const Home = () => {
       //Limpiando el campo de respuesta
       setAnswerInfo("");
       try {
+
+        console.log(personalized)
+        if(personalized) 
+        question = `Personalizada ${question}`
         //Guardando la respuesta en la db
         const dataAnswers = await fetch.FetchDataApi(
           {
@@ -63,6 +70,7 @@ const Home = () => {
           },
           "POST"
         );
+        console.log(dataAnswers)
         //Enviando la informacion de la respuesta al administrador
         emitAnswer(answer, user, question);
       } catch {
@@ -89,7 +97,7 @@ const Home = () => {
             <button
               ref={buttonAnswer}
               onClick={(e) =>
-                generateAnswer(e, answerInfo, dataUser.user, question)
+                generateAnswer(e, answerInfo, dataUser.user, question, personalized)
               }
             >
               Enviar respuesta

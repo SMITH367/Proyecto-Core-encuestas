@@ -106,20 +106,31 @@ router.post('/answers', (req, res) => {
         answer: req.body.answer,
         question: req.body.question
     }
+    console.log(data)
     conexionMysql.query("select user, question from respuestas", [data], (err, rows, fields) => {
 
         if (err) res.send(err)
 
         else {
-            console.log(rows)
             let existence = false
+            let updateQuery =""
+
             rows.forEach(element => {
-                if (element.user === data.user && element.question === data.question)
+                if (element.user === data.user && element.question === data.question){
                     existence = true
+                    updateQuery = query.updateAnswer
+                    console.log("Llegando 1")
+                }
+                else if(element.user === data.user && data.question.includes("Personalizada") === true){
+                    existence = true
+                    console.log(data.question.includes("Personalizada"), data.question)
+                    updateQuery = query.updatePersonalizedAnswer
+                    console.log("Llegando 2")
+                }
             });
 
             if (existence) {
-                conexionMysql.query(query.updateAnswer, [data.answer, data.user, data.question], (err, rows, fields) => {
+                conexionMysql.query(updateQuery, [data.answer, data.question, data.user], (err, rows, fields) => {
                     if (err) res.send(err)
                     else {
                         res.json("Answer updated");
