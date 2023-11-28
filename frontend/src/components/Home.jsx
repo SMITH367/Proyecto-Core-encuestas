@@ -38,7 +38,7 @@ const Home = () => {
         console.log(questionInfo.personalized)
         setPersonalized(questionInfo.personalized)
         //mostrando el boton
-        if(buttonAnswer !== null)
+        if(buttonAnswer.current !== null)
         buttonAnswer.current.hidden = false;
         //ocultando mensaje de espera
         setQuestionState(true);
@@ -51,6 +51,7 @@ const Home = () => {
     e.preventDefault()
       const fetch = new FetchData(`${getBACKENDurl}/answers`);
       //ocultando el boton
+      if(buttonAnswer.current != null)
       buttonAnswer.current.hidden = true;
       // mostrando el mensaje de espera
       setQuestionState(false);

@@ -25,6 +25,7 @@ const Admin = () => {
           const fetch = new FetchData(`${getBACKENDurl}/answers`);
           const data = await fetch.FetchDataApiGet();
           const users = data.map((el) => el.user);
+          console.log(users)
           let usersCleaned = Array.from(new Set(users));
           setusersLoggedIn(usersCleaned);
           setAnswers(data);
