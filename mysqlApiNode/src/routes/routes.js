@@ -121,7 +121,7 @@ router.post('/answers', (req, res) => {
                     updateQuery = query.updateAnswer
                     console.log("Llegando 1")
                 }
-                else if(element.user === data.user && data.question.includes("Personalizada") === true){
+                else if(element.user === data.user && data.question.includes("Personalizada") === true && element.question.includes("Personalizada")===true){
                     existence = true
                     console.log(data.question.includes("Personalizada"), data.question)
                     updateQuery = query.updatePersonalizedAnswer
@@ -137,6 +137,7 @@ router.post('/answers', (req, res) => {
                     }
                 })
             } else {
+                console.log("Creando nuevo")
                 conexionMysql.query(query.saveAnswer, [data], (err, rows, fields) => {
                     if (err) res.send(err)
                     else {
