@@ -20,8 +20,8 @@ const Home = () => {
   const dataUser = useUser(null);
   const [question, setQuestion] = useState("Pregunta 1");
   const [answerInfo, setAnswerInfo] = useState("");
-  const [personalized, setPersonalized] = useState(false)
-  
+  const [personalized, setPersonalized] = useState(false);
+
   //referencia que se encarga de controlar el estado del boton
   const buttonAnswer = useRef();
 
@@ -35,11 +35,10 @@ const Home = () => {
       //Validando si la pregunta va dirigida al usuario en cuestion
       if (questionInfo.user === dataUser.user) {
         setQuestion(questionInfo.question);
-        console.log(questionInfo.personalized)
-        setPersonalized(questionInfo.personalized)
+        console.log(questionInfo.personalized);
+        setPersonalized(questionInfo.personalized);
         //mostrando el boton
-        if(buttonAnswer.current !== null)
-        buttonAnswer.current.hidden = false;
+        if (buttonAnswer.current !== null) buttonAnswer.current.hidden = false;
         //ocultando mensaje de espera
         setQuestionState(true);
       }
@@ -47,36 +46,32 @@ const Home = () => {
   }, [question]);
 
   const generateAnswer = async (e, answer, user, question, personalized) => {
-
-    e.preventDefault()
-      const fetch = new FetchData(`${getBACKENDurl}/answers`);
-      //ocultando el boton
-      if(buttonAnswer.current != null)
-      buttonAnswer.current.hidden = true;
-      // mostrando el mensaje de espera
-      setQuestionState(false);
-      //Limpiando el campo de respuesta
-      setAnswerInfo("");
-      try {
-
-        console.log(personalized)
-        if(personalized) 
-        question = `Personalizada ${question}`
-        //Guardando la respuesta en la db
-        const dataAnswers = await fetch.FetchDataApi(
-          {
-            answer: answer,
-            user: user,
-            question: question,
-          },
-          "POST"
-        );
-        console.log(dataAnswers)
-        //Enviando la informacion de la respuesta al administrador
-        emitAnswer(answer, user, question);
-      } catch {
-        alert("Ha ocurrido un error");
-      }    
+    e.preventDefault();
+    const fetch = new FetchData(`${getBACKENDurl}/answers`);
+    //ocultando el boton
+    if (buttonAnswer.current != null) buttonAnswer.current.hidden = true;
+    // mostrando el mensaje de espera
+    setQuestionState(false);
+    //Limpiando el campo de respuesta
+    setAnswerInfo("");
+    try {
+      console.log(personalized);
+      if (personalized) question = `Personalizada ${question}`;
+      //Guardando la respuesta en la db
+      const dataAnswers = await fetch.FetchDataApi(
+        {
+          answer: answer,
+          user: user,
+          question: question,
+        },
+        "POST"
+      );
+      console.log(dataAnswers);
+      //Enviando la informacion de la respuesta al administrador
+      emitAnswer(answer, user, question);
+    } catch {
+      alert("Ha ocurrido un error");
+    }
   };
 
   return (
@@ -98,7 +93,13 @@ const Home = () => {
             <button
               ref={buttonAnswer}
               onClick={(e) =>
-                generateAnswer(e, answerInfo, dataUser.user, question, personalized)
+                generateAnswer(
+                  e,
+                  answerInfo,
+                  dataUser.user,
+                  question,
+                  personalized
+                )
               }
             >
               Enviar respuesta

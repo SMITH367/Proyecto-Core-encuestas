@@ -6,19 +6,22 @@ import "./styles/home.css";
 
 //Enviando pregunta hacia el usuario que le corresponde
 const emitQuestion = (question, user, personalized = false) => {
-  const data = JSON.stringify({ question: question, user: user, personalized:personalized });
-  
-  console.log(data)
+  const data = JSON.stringify({
+    question: question,
+    user: user,
+    personalized: personalized,
+  });
+
+  console.log(data);
   socket.emit("question", data);
 };
 
 const Admin = () => {
-
   const [usersLoggedIn, setusersLoggedIn] = useState([]);
   const [answers, setAnswers] = useState([]);
 
   //Funcion para actualizar la informacion de usuarios activos y sus respectivas respuestas
-  const getLogedUsersAndAnswers = async () =>{
+  const getLogedUsersAndAnswers = async () => {
     try {
       const fetch = new FetchData(`${getBACKENDurl}/answers`);
       const data = await fetch.FetchDataApiGet();
@@ -29,41 +32,38 @@ const Admin = () => {
     } catch {
       alert("Ha ocurrido un error");
     }
-  }
+  };
 
   //Recibiendo la informacion de los usuarios que se vayan logeando
   useEffect(() => {
-    socket.on("message", (text) => {  
-     getLogedUsersAndAnswers()
+    socket.on("message", (text) => {
+      getLogedUsersAndAnswers();
     });
-      }, [usersLoggedIn]);
+  }, [usersLoggedIn]);
 
   //Recibiendo las respuestas en tiempo real de los usuarios
   useEffect(() => {
     socket.on("answer", async (data) => {
       //Obteniendo las respuestas de los usuarios para mostrarlas.
-   getLogedUsersAndAnswers()
+      getLogedUsersAndAnswers();
     });
   }, []);
 
   //Obteniendo informacion de respuestas al cargar la pagina
-  useEffect( () => {
-    getLogedUsersAndAnswers()
+  useEffect(() => {
+    getLogedUsersAndAnswers();
   }, []);
-
 
   //Mostrando la informacion de usuarios logeados y de sus respectivas respuestas
   //NOTA: Las respuestas pueden ser mostradas como estan (es decir se recibe y se muestra) o se pueden mostrar las que se solicitan al back
- 
- 
+
   //Pregunta personalizada
   const personalizedQuestion = (user) => {
-    //Agregar medio personalizado para recibir las preguntas 
-    const question = prompt("Ingrese la pregunta personalizada")
-    emitQuestion(question,user, true)
-  }
+    //Agregar medio personalizado para recibir las preguntas
+    const question = prompt("Ingrese la pregunta personalizada");
+    emitQuestion(question, user, true);
+  };
 
- 
   return (
     <>
       <p>.</p>
@@ -93,35 +93,58 @@ const Admin = () => {
                     <button onClick={(e) => personalizedQuestion(el)}>
                       Pregunta personalizada
                     </button>
-                    
                   </div>
                   <div className="el">
-                      <h2 className="center">Respuestas</h2>
-                      <section className="answers-cont">                    
+                    <h2 className="center">Respuestas</h2>
+                    <section className="answers-cont">
                       {answers.map(
                         (answer) =>
-                          answer.user === el && answer.question === "Pregunta 1" &&
-                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
-                      )}{answers.map(
-                        (answer) =>
-                          answer.user === el && answer.question === "Pregunta 2" &&
-                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
-                      )}{answers.map(
-                        (answer) =>
-                          answer.user === el && answer.question === "Pregunta 3" &&
-                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
-                      )}{answers.map(
-                        (answer) =>
-                          answer.user === el && answer.question === "Pregunta 4" &&
-                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
-                      )}{answers.map(
-                        (answer) =>
-                          answer.user === el && answer.question.includes("Personalizada") === true &&
-                        <div className="answer">{`${answer.question}:  ${answer.answer}`} <br /></div>                          
+                          answer.user === el &&
+                          answer.question === "Pregunta 1" && (
+                            <div className="answer">
+                              {`${answer.question}:  ${answer.answer}`} <br />
+                            </div>
+                          )
                       )}
-                      </section>
-                     
-                    </div>
+                      {answers.map(
+                        (answer) =>
+                          answer.user === el &&
+                          answer.question === "Pregunta 2" && (
+                            <div className="answer">
+                              {`${answer.question}:  ${answer.answer}`} <br />
+                            </div>
+                          )
+                      )}
+                      {answers.map(
+                        (answer) =>
+                          answer.user === el &&
+                          answer.question === "Pregunta 3" && (
+                            <div className="answer">
+                              {`${answer.question}:  ${answer.answer}`} <br />
+                            </div>
+                          )
+                      )}
+                      {answers.map(
+                        (answer) =>
+                          answer.user === el &&
+                          answer.question === "Pregunta 4" && (
+                            <div className="answer">
+                              {`${answer.question}:  ${answer.answer}`} <br />
+                            </div>
+                          )
+                      )}
+                      {answers.map(
+                        (answer) =>
+                          answer.user === el &&
+                          answer.question.includes("Personalizada") ===
+                            true && (
+                            <div className="answer">
+                              {`${answer.question}:  ${answer.answer}`} <br />
+                            </div>
+                          )
+                      )}
+                    </section>
+                  </div>
                 </div>
               </>
             ))}

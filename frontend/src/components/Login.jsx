@@ -5,7 +5,7 @@ import { Navigate } from "react-router";
 import { Link } from "react-router-dom";
 import "./styles/forms.css";
 
-//Componente con la vista para el inicio de sesion. 
+//Componente con la vista para el inicio de sesion.
 
 const Login = ({ setUserDataStatus }) => {
   const loginSesion = useLoginSesion;
