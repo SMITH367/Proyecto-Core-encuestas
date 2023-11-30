@@ -16,61 +16,39 @@ const Admin = () => {
 
   const [usersLoggedIn, setusersLoggedIn] = useState([]);
   const [answers, setAnswers] = useState([]);
- 
+
+  //Funcion para actualizar la informacion de usuarios activos y sus respectivas respuestas
+  const getLogedUsersAndAnswers = async () =>{
+    try {
+      const fetch = new FetchData(`${getBACKENDurl}/answers`);
+      const data = await fetch.FetchDataApiGet();
+      const users = data.map((el) => el.user);
+      let usersCleaned = Array.from(new Set(users));
+      setusersLoggedIn(usersCleaned);
+      setAnswers(data);
+    } catch {
+      alert("Ha ocurrido un error");
+    }
+  }
+
   //Recibiendo la informacion de los usuarios que se vayan logeando
   useEffect(() => {
-    socket.on("message", (text) => {
-      const getLogedUsers = async () =>{
-        try {
-          const fetch = new FetchData(`${getBACKENDurl}/answers`);
-          const data = await fetch.FetchDataApiGet();
-          const users = data.map((el) => el.user);
-          console.log(users)
-          let usersCleaned = Array.from(new Set(users));
-          setusersLoggedIn(usersCleaned);
-          setAnswers(data);
-        } catch {
-          alert("Ha ocurrido un error");
-        }
-      }
-      getLogedUsers()
+    socket.on("message", (text) => {  
+     getLogedUsersAndAnswers()
     });
       }, [usersLoggedIn]);
 
-  //Recibiendo las respuestas de los usuarios
+  //Recibiendo las respuestas en tiempo real de los usuarios
   useEffect(() => {
     socket.on("answer", async (data) => {
       //Obteniendo las respuestas de los usuarios para mostrarlas.
-      try {
-        const fetch = new FetchData(`${getBACKENDurl}/answers`);
-        const data = await fetch.FetchDataApiGet();
-        const users = data.map((el) => el.user);
-        let usersCleaned = Array.from(new Set(users));
-        setusersLoggedIn(usersCleaned);
-        setAnswers(data);
-      } catch {
-        alert("Ha ocurrido un error");
-      }
+   getLogedUsersAndAnswers()
     });
   }, []);
 
+  //Obteniendo informacion de respuestas al cargar la pagina
   useEffect( () => {
-    const loadMessages = async () => {
-      try {
-        const fetch = new FetchData(`${getBACKENDurl}/answers`);
-        const data = await fetch.FetchDataApiGet();
-        const users = data.map((el) => el.user);
-        let usersCleaned = Array.from(new Set(users));
-  
-        console.log(usersCleaned);
-        setusersLoggedIn(usersCleaned);
-        setAnswers(data)
-      
-      } catch {
-        alert("Ha ocurrido un error");
-      }
-    }
-    loadMessages()
+    getLogedUsersAndAnswers()
   }, []);
 
 
