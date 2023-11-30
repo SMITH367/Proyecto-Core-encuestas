@@ -1,4 +1,4 @@
 //Definicion de una URL global del backend
 
-const getBACKENDurl = "https://hsgplggt-3001.use2.devtunnels.ms"
+const getBACKENDurl = "http://localhost:3001"
 export {getBACKENDurl}
