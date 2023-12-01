@@ -71,9 +71,9 @@ const Admin = () => {
         <section className="main-admin-panel">
           <article className="main-admin-panel-element">
             <h1 className="center">Usuarios activos</h1>
-            {usersLoggedIn.map((el, id) => (
-              <>
-                <div key={id} className="element-cont">
+            {usersLoggedIn.map((el) => (
+              <div key={el}>
+                <div  className="element-cont">
                   <div className="el">
                     <p>{el}</p>
                     <button onClick={(e) => emitQuestion("Pregunta 1", el)}>
@@ -88,7 +88,6 @@ const Admin = () => {
                     <button onClick={(e) => emitQuestion("Pregunta 4", el)}>
                       pregunta 4
                     </button>
-
                     <button onClick={(e) => personalizedQuestion(el)}>
                       Pregunta personalizada
                     </button>
@@ -97,47 +96,47 @@ const Admin = () => {
                     <h2 className="center">Respuestas</h2>
                     <section className="answers-cont">
                       {answers.map(
-                        (answer) =>
+                        (answer, id) =>
                           answer.user === el &&
                           answer.question === "Pregunta 1" && (
-                            <div className="answer">
+                            <div key={id} className="answer">
                               {`${answer.question}:  ${answer.answer}`} <br />
                             </div>
                           )
                       )}
                       {answers.map(
-                        (answer) =>
+                        (answer,id) =>
                           answer.user === el &&
                           answer.question === "Pregunta 2" && (
-                            <div className="answer">
+                            <div key={id} className="answer">
                               {`${answer.question}:  ${answer.answer}`} <br />
                             </div>
                           )
                       )}
                       {answers.map(
-                        (answer) =>
+                        (answer,id) =>
                           answer.user === el &&
                           answer.question === "Pregunta 3" && (
-                            <div className="answer">
+                            <div key={id} className="answer">
                               {`${answer.question}:  ${answer.answer}`} <br />
                             </div>
                           )
                       )}
                       {answers.map(
-                        (answer) =>
+                        (answer, id) =>
                           answer.user === el &&
                           answer.question === "Pregunta 4" && (
-                            <div className="answer">
+                            <div key={id} className="answer">
                               {`${answer.question}:  ${answer.answer}`} <br />
                             </div>
                           )
                       )}
                       {answers.map(
-                        (answer) =>
+                        (answer,id) =>
                           answer.user === el &&
                           answer.question.includes("Personalizada") ===
                             true && (
-                            <div className="answer">
+                            <div key={id} className="answer">
                               {`${answer.question}:  ${answer.answer}`} <br />
                             </div>
                           )
@@ -145,7 +144,7 @@ const Admin = () => {
                     </section>
                   </div>
                 </div>
-              </>
+              </div>
             ))}
           </article>
         </section>
