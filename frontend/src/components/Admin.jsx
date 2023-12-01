@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import socket from "../hooks/useSocket";
 import { FetchData } from "./services/fetchData";
 import { getBACKENDurl } from "./services/getBACKENDurl";
@@ -12,7 +12,6 @@ const emitQuestion = (question, user, personalized = false) => {
     personalized: personalized,
   });
 
-  console.log(data);
   socket.emit("question", data);
 };
 

@@ -17,7 +17,7 @@ const Login = ({ setUserDataStatus }) => {
 
   return (
     <>
-      {userData.login === "true" && <Navigate to="/"></Navigate>}
+      {userData.login === "true" && <Navigate to="/home"></Navigate>}
       <p>.</p>
 
       <div className="container">

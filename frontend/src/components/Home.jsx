@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import useUser from "../hooks/useUser";
+import { Navigate } from "react-router";
 import socket from "../hooks/useSocket";
 import { FetchData } from "./services/fetchData";
 import { getBACKENDurl } from "../components/services/getBACKENDurl";
@@ -12,7 +13,6 @@ const emitAnswer = (answer, user, question) => {
     user: user,
     question: question,
   });
-  console.log("sending");
   socket.emit("answer", data);
 };
 
@@ -35,7 +35,6 @@ const Home = () => {
       //Validando si la pregunta va dirigida al usuario en cuestion
       if (questionInfo.user === dataUser.user) {
         setQuestion(questionInfo.question);
-        console.log(questionInfo.personalized);
         setPersonalized(questionInfo.personalized);
         //mostrando el boton
         if (buttonAnswer.current !== null) buttonAnswer.current.hidden = false;
@@ -43,7 +42,7 @@ const Home = () => {
         setQuestionState(true);
       }
     });
-  }, [question]);
+  }, [dataUser.user, question]);
 
   const generateAnswer = async (e, answer, user, question, personalized) => {
     e.preventDefault();
@@ -55,7 +54,7 @@ const Home = () => {
     //Limpiando el campo de respuesta
     setAnswerInfo("");
     try {
-      console.log(personalized);
+     
       if (personalized) question = `Personalizada ${question}`;
       //Guardando la respuesta en la db
       const dataAnswers = await fetch.FetchDataApi(
@@ -66,7 +65,7 @@ const Home = () => {
         },
         "POST"
       );
-      console.log(dataAnswers);
+      
       //Enviando la informacion de la respuesta al administrador
       emitAnswer(answer, user, question);
     } catch {
@@ -78,6 +77,7 @@ const Home = () => {
     <>
       <p>.</p>
       <div className="container-home">
+      {dataUser.login !== "true" && <Navigate to="/"></Navigate>}
         <p>Hola, {dataUser.user} si sale tu nombre, estas logeado</p>
         {dataUser.login === "true" && (
           <form>

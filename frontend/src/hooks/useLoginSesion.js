@@ -9,7 +9,6 @@ import socket from "../hooks/useSocket";
 
 
 const emitLoginSignal = (user) => {
-  console.log("say hello")
   socket.emit("message", user);
 };
 
@@ -42,7 +41,7 @@ const useLoginSesion = async (e, setUserDataStatus, user, password) => {
         localStorage.setItem("token", dataUser.accessToken)
 
         return <Navigate to = {
-          "/"
+          "/home"
         }
         
         />;

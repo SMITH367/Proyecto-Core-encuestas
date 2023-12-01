@@ -18,9 +18,9 @@ const App = () => {
       <HashRouter>
         <Header setUserDataStatus={setUserDataStatus}> </Header>{" "}
         <Routes>
-          <Route path="/" element={<Home> </Home>} />
+          <Route path="/home" element={<Home> </Home>} />
           <Route
-            path="/login"
+            path="/"
             element={<Login setUserDataStatus={setUserDataStatus}> </Login>}
           />
       

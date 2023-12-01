@@ -11,9 +11,6 @@ const useCloseSesion = async (setUserDataStatus, user) => {
         const fetch = new FetchData(`${getBACKENDurl}/logout/${user}`);
         const data = await fetch.FetchDataApi({}, "POST");
 
-        console.log(data)
-
-
         setUserDataStatus({
             login: false,
             user: null,
