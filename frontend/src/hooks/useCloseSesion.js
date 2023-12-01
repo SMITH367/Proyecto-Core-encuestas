@@ -9,6 +9,7 @@ const useCloseSesion = async (setUserDataStatus, user) => {
 
     try {
         const fetch = new FetchData(`${getBACKENDurl}/logout/${user}`);
+        // eslint-disable-next-line
         const data = await fetch.FetchDataApi({}, "POST");
 
         setUserDataStatus({

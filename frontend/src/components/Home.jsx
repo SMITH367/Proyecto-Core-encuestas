@@ -57,6 +57,8 @@ const Home = () => {
      
       if (personalized) question = `Personalizada ${question}`;
       //Guardando la respuesta en la db
+      
+      // eslint-disable-next-line
       const dataAnswers = await fetch.FetchDataApi(
         {
           answer: answer,
